@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
     /*memorizza l'input della tastera, ha due componenti: x e y*/
     private Animator animator;      //componente dell'animator creato nel gioco
 
+    public LayerMask solidObjectsLayer;
+
 /*Awake è una funzione speciale di unity, lifecycle method
   Unity la chiama automaticamente
   Unity cerca il componente Animator attaccato allo stesso 
@@ -55,9 +57,12 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
                 targetPos.x+=input.x * stepSize;
                 targetPos.y+=input.y * stepSize;
 
+
+                if(isWalkable(targetPos)) {
                 //Ora avvio il movimento per arrivare a target
                 StartCoroutine(Move(targetPos));
                 //Coroutine è una funzione che serve a fare operazioni distribuite nel tempo
+                }
             }
         }
 
@@ -95,5 +100,14 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
         //aggiorniamo la posizione esatta e segnaliamo che non ci stiamo più muovendo
         transform.position=targetPos;
         isMoving=false;
+    }
+
+    private bool isWalkable(Vector3 targetPos)
+    {
+        if(Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer)!=null)
+        {
+            return false;
+        }
+        return true;
     }
 }
