@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
     // Start is called before the first frame update
     public float moveSpeed;     //velocità movimento personaggio
     private bool isMoving;      //capire se si sta muovendo
-    public float stepSize = 0.2f;   //ogni passo sposta di 0.2f
+    public float stepSize = 1f;    // 0.2f;   //ogni passo sposta di 0.2f
     private Vector2 input;      //serve a vedere se c'è qualche movimento dalla tasteria di chi gioca
     /*memorizza l'input della tastera, ha due componenti: x e y*/
     private Animator animator;      //componente dell'animator creato nel gioco
@@ -62,9 +62,12 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
                 //Ora avvio il movimento per arrivare a target
                 StartCoroutine(Move(targetPos));
                 //Coroutine è una funzione che serve a fare operazioni distribuite nel tempo
-                }
+                } 
+               
             }
         }
+    
+        
 
         //l'animator ogni volta deve aggiornare il booleano tra Idle e Walk
         animator.SetBool("isMoving", isMoving);
@@ -84,7 +87,8 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
     */
     IEnumerator Move(Vector3 targetPos)     
     {
-        while ((targetPos-transform.position).sqrMagnitude>Mathf.Epsilon)
+        while ((targetPos-transform.position).sqrMagnitude > 0.0001f)
+        //while ((targetPos-transform.position).sqrMagnitude>Mathf.Epsilon)
         {
             //se c'è stato un movimento (target-posizione corrente) ed è 
             // maggiore di poco più di 0(mathf.epsilon) allora mi sto muovendo
@@ -104,7 +108,7 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
 
     private bool isWalkable(Vector3 targetPos)
     {
-        if(Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer)!=null)
+        if(Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer)!=null)  //era 0.2f
         {
             return false;
         }
