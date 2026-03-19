@@ -20,5 +20,12 @@ public class chest : MonoBehaviour
             GetComponent<BoxCollider2D>().enabled = false;
         }
     }
-   
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            animator.SetBool("open", false);
+        }
+    }
 }
