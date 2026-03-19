@@ -26,6 +26,7 @@ public class chest : MonoBehaviour
         if (other.tag == "Player")
         {
             animator.SetBool("open", false);
+            GetComponent<BoxCollider2D>().enabled = true;
         }
     }
 }
