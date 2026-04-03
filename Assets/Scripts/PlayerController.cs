@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
 
     private bool isWalkable(Vector3 targetPos)
     {
-        if(Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer)!=null)  //era 0.2f
+        if(Physics2D.OverlapCircle(targetPos, 0.15f, solidObjectsLayer)!=null)  //era 0.2f
         {
             return false;
         }

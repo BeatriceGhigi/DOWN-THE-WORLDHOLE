@@ -14,7 +14,7 @@ TagManager:
   - Player
   - SolidObjects
   - SolidObjects
-  - 
+  - porte
   - 
   - 
   - 
@@ -43,4 +43,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 1968047877
+    locked: 0
+  - name: porta
+    uniqueID: 3109498947
     locked: 0
