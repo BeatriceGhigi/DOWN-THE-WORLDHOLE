@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
     private Animator animator;      //componente dell'animator creato nel gioco
 
     public LayerMask solidObjectsLayer;
+    public LayerMask InteractableLayer;
 
 /*Awake è una funzione speciale di unity, lifecycle method
   Unity la chiama automaticamente
@@ -31,7 +32,7 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
     /* Update is called once per frame
     è una funzione che viene chiamata continuamente, ogni frame
     Qui lo usiamo perche l'input della tastiera va controllato continuamente*/
-    private void Update()
+    public void HandleUpdate()
     {
         /*qui viene eseguita tutta la logica del movimento*/
         if(!isMoving)
@@ -42,8 +43,8 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
             //getAxisRaw si usa quando vuoi movimenti più a scatti
 
             //debug, stampa i valori dell'input
-            Debug.Log("This is input.x" + input.x);
-            Debug.Log("This is input.y" + input.y);
+            //Debug.Log("This is input.x" + input.x);
+            //Debug.Log("This is input.y" + input.y);
 
 
             if(input != Vector2.zero)   //Vector2.zero=(0,0), quindi ti dice: se ti vuoi muovere, allora...
@@ -71,7 +72,29 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
 
         //l'animator ogni volta deve aggiornare il booleano tra Idle e Walk
         animator.SetBool("isMoving", isMoving);
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            Interact();
+        }
     }
+
+
+    void Interact()
+    {
+        var facingDir= new Vector3(animator.GetFloat("MoveX"), animator.GetFloat("MoveY"));
+        var interactPos = transform.position + facingDir;
+
+        //Debug.DrawLine(transform.position, interactPos, Color.red, 1f);
+
+        var collider = Physics2D.OverlapCircle(interactPos, 0.2f, InteractableLayer);
+        if(collider!=null)
+        {
+            collider.GetComponent<Interactable>()?.Interact();
+        }
+
+    }
+
 
     /*Nell'input uso Vector2 perché tanto da tastiera riguarda solo orizzontale e verticale
     quindi due dimensioni vanno bene
@@ -108,7 +131,7 @@ public class PlayerController : MonoBehaviour   //la classe eredita da monobehav
 
     private bool isWalkable(Vector3 targetPos)
     {
-        if(Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer)!=null)  //era 0.2f
+        if(Physics2D.OverlapCircle(targetPos, 0.05f, solidObjectsLayer | InteractableLayer)!=null)  //era 0.2f
         {
             return false;
         }
